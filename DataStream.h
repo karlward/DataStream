@@ -16,26 +16,27 @@ class StreamItem {
 template <class T>
 class DataStream {
   private:
-    long _currentSize; 
+    unsigned long _currentSize; 
     StreamItem<T>* _head;
-    long _maxSize; 
+    unsigned long _maxSize; 
     StreamItem<T>* _tail;
 
   public:
-    DataStream(const long maxSize) {
+    DataStream(const unsigned long maxSize) {
       _currentSize = 0;
       _maxSize = maxSize;
       _head = NULL;
       _tail = NULL;
     }
 
-    DataStream(const long maxSize, T* data, const long dataSize) {
+    DataStream(const unsigned long maxSize, T* data, 
+               const unsigned long dataSize) {
       _currentSize = 0;
       _maxSize = maxSize;
       _head = NULL;
       _tail = NULL;
 
-      for (long i = 0; i < dataSize; i++) {
+      for (unsigned long i = 0; i < dataSize; i++) {
         //Serial.print("writing value ");
         //Serial.println(data[i]);
         write(data[i]);
