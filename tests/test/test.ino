@@ -1,11 +1,9 @@
-#line 2 "test.ino"
-
-// https://github.com/mmurdoch/arduinounit
+// See https://github.com/mmurdoch/arduinounit
 #include <ArduinoUnit.h>
+// See https://github.com/karlward/DataStream
 #include <DataStream.h>
 
 test(instantiateInt) {
-  // test int
   DataStream<int> s0 = DataStream<int>();
   assertEqual(0, s0.available());
   DataStream<int> s1 = DataStream<int>(1);
@@ -14,14 +12,12 @@ test(instantiateInt) {
   assertEqual(0, s2.available());
   DataStream<int> s3 = DataStream<int>(3);
   assertEqual(0, s3.available());
-  DataStream<int> s4 = DataStream<int>(100);
+  DataStream<int> s4 = DataStream<int>(1024);
   assertEqual(0, s4.available());
-  DataStream<int> s5 = DataStream<int>(1024);
+  DataStream<int> s5 = DataStream<int>(65535);
   assertEqual(0, s5.available());
-  DataStream<int> s6 = DataStream<int>(16536);
+  DataStream<int> s6 = DataStream<int>(4294967295);
   assertEqual(0, s6.available());
-  DataStream<int> s7 = DataStream<int>(65535);
-  assertEqual(0, s7.available());
 }
 
 test(instantiateLong) {
@@ -33,14 +29,12 @@ test(instantiateLong) {
   assertEqual(0, s2.available());
   DataStream<long> s3 = DataStream<long>(3);
   assertEqual(0, s3.available());
-  DataStream<long> s4 = DataStream<long>(100);
+  DataStream<long> s4 = DataStream<long>(1024);
   assertEqual(0, s4.available());
-  DataStream<long> s5 = DataStream<long>(1024);
+  DataStream<long> s5 = DataStream<long>(65535);
   assertEqual(0, s5.available());
-  DataStream<long> s6 = DataStream<long>(16536);
+  DataStream<long> s6 = DataStream<long>(4294967295);
   assertEqual(0, s6.available());
-  DataStream<long> s7 = DataStream<long>(65535);
-  assertEqual(0, s7.available());
 }
 
 test(instantiateFloat) {
@@ -52,14 +46,12 @@ test(instantiateFloat) {
   assertEqual(0, s2.available());
   DataStream<float> s3 = DataStream<float>(3);
   assertEqual(0, s3.available());
-  DataStream<float> s4 = DataStream<float>(100);
+  DataStream<float> s4 = DataStream<float>(1024);
   assertEqual(0, s4.available());
-  DataStream<float> s5 = DataStream<float>(1024);
+  DataStream<float> s5 = DataStream<float>(65535);
   assertEqual(0, s5.available());
-  DataStream<float> s6 = DataStream<float>(16536);
+  DataStream<float> s6 = DataStream<float>(4294967295);
   assertEqual(0, s6.available());
-  DataStream<float> s7 = DataStream<float>(65535);
-  assertEqual(0, s7.available());
 }
 
 test(writeInt) {
@@ -67,6 +59,13 @@ test(writeInt) {
   s0.write(145);
   assertEqual(1, s0.available());
   assertEqual(145, s0.read());
+  for (int i = 0; i < 100; i++) { 
+    s0.write(i); 
+  }
+  for (int j = 90; j < 100; j++) { 
+    assertEqual((100 - j), s0.available());
+    assertEqual(j, s0.read());
+  }
 }
 
 test(writeLong) {
@@ -74,6 +73,16 @@ test(writeLong) {
   s0.write(300000);
   assertEqual(1, s0.available());
   assertEqual(300000, s0.read());
+  s0.write(4294967295); 
+  assertEqual(1, s0.available());
+  assertEqual(4294967295, s0.read());
+  for (long i = 0; i < 100; i++) { 
+    s0.write(i); 
+  }
+  for (long j = 90; j < 100; j++) { 
+    assertEqual((100 - j), s0.available());
+    assertEqual(j, s0.read());
+  }
 }
 
 test(writeFloat) {
@@ -81,60 +90,127 @@ test(writeFloat) {
   s0.write(8.765);
   assertEqual(1, s0.available());
   assertEqual(8.765, s0.read());
+  for (float i = 0.0; i < 100.0; i++) { 
+    s0.write(i); 
+  }
+  for (long j = 90.0; j < 100.0; j++) { 
+    assertEqual((100.0 - j), s0.available());
+    assertEqual(j, s0.read());
+  }
 }
 
 test(available) {
-  DataStream<long> s0 = DataStream<long>(3);
+  DataStream<int> s0 = DataStream<int>(3);
   assertEqual(0, s0.available());
+  assertEqual(0, s0.available());
+  s0.write(18);
+  assertEqual(1, s0.available());
+  assertEqual(1, s0.available());
+  s0.write(1790);
+  assertEqual(2, s0.available());
+  assertEqual(2, s0.available());
+  s0.write(17648);
+  assertEqual(3, s0.available());
+  assertEqual(3, s0.available());
+  s0.write(24);
+  assertEqual(3, s0.available());
+  assertEqual(3, s0.available());
+  s0.write(2478);
+  assertEqual(3, s0.available());
+  assertEqual(3, s0.available());
+  assertEqual(3, s0.available());
+
+  DataStream<long> s1 = DataStream<long>(3);
+  assertEqual(0, s1.available());
+  assertEqual(0, s1.available());
+  s1.write(1800);
+  assertEqual(1, s1.available());
+  assertEqual(1, s1.available());
+  s1.write(179000);
+  assertEqual(2, s1.available());
+  assertEqual(2, s1.available());
+  s1.write(1764800);
+  assertEqual(3, s1.available());
+  assertEqual(3, s1.available());
+  s1.write(4200000000);
+  assertEqual(3, s1.available());
+  assertEqual(3, s1.available());
+  s1.write(247800);
+  assertEqual(3, s1.available());
+  assertEqual(3, s1.available());
+
+  DataStream<float> s2 = DataStream<float>(3);
+  assertEqual(0, s2.available());
+  assertEqual(0, s2.available());
+  s2.write(18.45787);
+  assertEqual(1, s2.available());
+  assertEqual(1, s2.available());
+  s2.write(1790.789645);
+  assertEqual(2, s2.available());
+  assertEqual(2, s2.available());
+  s2.write(17648.6754);
+  assertEqual(3, s2.available());
+  assertEqual(3, s2.available());
+  s2.write(24.01);
+  assertEqual(3, s2.available());
+  assertEqual(3, s2.available());
+  s2.write(2478.68764);
+  assertEqual(3, s2.available());
+  assertEqual(3, s2.available());
 }
 
-test(read) {
-    int data[3] = {1023,31000,99};
-    DataStream<int> s = DataStream<int>(3, data, 3);
-    
-    assertEqual(3, s.available());
-    assertEqual(1023, s.read());
-    assertEqual(2, s.available());
-    assertEqual(31000, s.read());
-    assertEqual(1, s.available());
-    assertEqual(99, s.read());
-    assertEqual(0, s.available());
-
-    // reading an empty buffer always returns -1
-    //assertEqual(-1, s.read());
-    //assertEqual(-1, s.read());
-    //assertEqual(-1, s.read());    
+test(readInt) {
+  int data[3] = {1023, 31000, 99};
+  DataStream<int> s = DataStream<int>(3, data, 3);
+  
+  assertEqual(3, s.available());
+  assertEqual(1023, s.read());
+  assertEqual(2, s.available());
+  assertEqual(31000, s.read());
+  assertEqual(1, s.available());
+  assertEqual(99, s.read());
+  assertEqual(0, s.available());
 }
 
-/*
-test(peek)
-{
-    int data[] = {1023,31000,99};
-    DataStream s = DataStream(data, 3);
-    
-    assertEqual(3, s.available());
-    assertEqual(1023, s.peek());
-    assertEqual(1023, s.read());
-
-    assertEqual(31000, s.peek());
-    assertEqual(31000, s.read());
-    
-    assertEqual(1, s.available());
-    assertEqual(99, s.peek());
-    assertEqual(99, s.read());
-    
-    assertEqual(0, s.available());
-    assertEqual(-1, s.peek());
-    assertEqual(-1, s.read());
+test(readLong) {
+  long data[5] = {101500, 32, 9, 4200000000, 0};
+  DataStream<long> s = DataStream<long>(5, data, 5);
+  
+  assertEqual(5, s.available());
+  assertEqual(101500, s.read());
+  assertEqual(4, s.available());
+  assertEqual(32, s.read());
+  assertEqual(3, s.available());
+  assertEqual(9, s.read());
+  assertEqual(2, s.available());
+  assertEqual(4200000000, s.read());
+  assertEqual(1, s.available());
+  assertEqual(0, s.read());
+  assertEqual(0, s.available());
 }
-*/
 
-void setup()
-{
+test(peekInt) {
+  int data[3] = {1023,31000,99};
+  DataStream<int> s = DataStream<int>(3, data, 3);
+  
+  assertEqual(3, s.available());
+  assertEqual(1023, s.peek());
+  assertEqual(1023, s.read());
+
+  assertEqual(31000, s.peek());
+  assertEqual(31000, s.read());
+  
+  assertEqual(1, s.available());
+  assertEqual(99, s.peek());
+  assertEqual(99, s.read());
+  
+  assertEqual(0, s.available());
+}
+
+void setup() {
   Serial.begin(9600);
 }
 
-void loop()
-{
+void loop() {
   Test::run();
 }
