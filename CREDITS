@@ -1,0 +1,28 @@
+Copyright 2013 Karl Ward and contributors
+
+DataStream was inspired by Don Coleman's ByteStream library.  Unfortunately, 
+ByteStream was not suitable for easy handling of types larger than 1 byte, 
+which is why DataStream was created. 
+
+Most of this work was done under the auspices of an NYU ITP in-house 
+internship with Tom Igoe during Summer 2013.  
+
+Tom Igoe and Surya Mattu contributed to the very early design phase, before 
+any of us realized that DataStream might be necessary for some of the 
+thornier problems lurking in the design of the Arduino Filter library.  
+
+REFERENCES
+Filter used scaffold code from: 
+- http://arduino.cc/en/Hacking/LibraryTutorial (public domain example)
+- https://github.com/don/ArduinoByteStream (LGPL library)
+
+The Arduino base libraries were also consulted for learning purposes, but no 
+code was incorporated from those sources.
+
+The Arduino Filter library was the original driver behind the DataStream 
+project: 
+- https://github.com/karlward/Filter
+
+Matthew Murdoch's ArduinoUnit testing library is great.  And the ByteStream unit tests proved very helpful.
+- https://github.com/mmurdoch/arduinounit
+
