@@ -50,8 +50,19 @@ class DataStream {
       _tail = NULL;
     }
 
+    // Destructor
     ~DataStream() {
-      // FIXME: implement
+      if (_head != NULL) { 
+        StreamItem<T>* cur = _head;
+        StreamItem<T>* next = _head;
+        while (cur != NULL) {
+          next = cur->_next;
+          free(cur); 
+          cur = next;
+        }
+        _currentSize = NULL;
+        _maxSize = NULL;
+      }
     }
 
     T available() {
