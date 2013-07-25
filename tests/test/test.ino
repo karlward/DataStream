@@ -214,6 +214,20 @@ test(flushInt) {
   assertEqual(0, s.available());
 } 
 
+test(flushLong) {
+  long data[3] = {1023,3100000000,99};
+  DataStream<long> s = DataStream<long>(3, data, 3);
+  s.flush();
+  assertEqual(0, s.available());
+} 
+
+test(flushFloat) {
+  float data[3] = {1023.5,31000.11,99.08};
+  DataStream<float> s = DataStream<float>(3, data, 3);
+  s.flush();
+  assertEqual(0, s.available());
+} 
+
 void setup() {
   Serial.begin(9600);
 }
