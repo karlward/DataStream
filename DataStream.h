@@ -87,9 +87,8 @@ class DataStream {
 
       if (available() > 0) {
         value = _head->_value;
-        return value;
       }
-
+      return value;
     }
 
     void flush() {
