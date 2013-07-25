@@ -1,4 +1,4 @@
-// Arduino Stream-like library that can hold any type
+// Arduino Stream-like library for data of any type
 
 #ifndef DataStream_h
 #define DataStream_h
@@ -7,10 +7,12 @@
 
 template <class T>
 class StreamItem { 
-  public: // FIXME: can this be private instead?
+  private:
     T _value;
     StreamItem<T>* _next;
     StreamItem<T>* _prev;
+  public:
+    template<class> friend class DataStream;
 }; 
 
 template <class T>
@@ -37,8 +39,6 @@ class DataStream {
       _tail = NULL;
 
       for (unsigned long i = 0; i < dataSize; i++) {
-        //Serial.print("writing value ");
-        //Serial.println(data[i]);
         write(data[i]);
       }
     }
@@ -52,7 +52,8 @@ class DataStream {
 
     // Destructor
     ~DataStream() {
-      flush();
+      // FIXME: implement, free() any memory reserved by malloc()
+      // will probably want something very similar to flush()
     }
 
     T available() {
@@ -66,8 +67,6 @@ class DataStream {
       if (available() > 0) {
         oldHead = _head;
         value = _head->_value;
-        //Serial.print("reading value "); 
-        //Serial.println(_head->_value);
         if (_head == _tail) { 
           _head = NULL;
           _tail = NULL;
@@ -110,16 +109,14 @@ class DataStream {
       StreamItem<T>* item;
       item = (StreamItem<T>*) malloc(sizeof(StreamItem<T>));
       item->_value = incoming;
-      //Serial.print("not written yet but value is "); 
-      //Serial.println(item->_value); 
-      if (_currentSize == 0) {
+      if (_currentSize == 0) { // stream empty
         _head = item;
         _head->_next = NULL;
         _head->_prev = NULL;
         _tail = _head;
         _currentSize++;
       }
-      else if (_currentSize < _maxSize) {
+      else if (_currentSize < _maxSize) { // stream has items but is not full
         StreamItem<T>* oldTail = _tail;
         oldTail->_next = item;
         _tail = item;
@@ -148,8 +145,6 @@ class DataStream {
         }
         free(oldHead);
       }
-      //Serial.print("checking written value "); 
-      //Serial.println(_head->_value); // not correct, always head
       return(1);
     }
 }; // end class DataStream
