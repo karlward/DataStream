@@ -207,6 +207,13 @@ test(peekInt) {
   assertEqual(0, s.available());
 }
 
+test(flushInt) {
+  int data[3] = {1023,31000,99};
+  DataStream<int> s = DataStream<int>(3, data, 3);
+  s.flush();
+  assertEqual(0, s.available());
+} 
+
 void setup() {
   Serial.begin(9600);
 }

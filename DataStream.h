@@ -52,17 +52,7 @@ class DataStream {
 
     // Destructor
     ~DataStream() {
-      if (_head != NULL) { 
-        StreamItem<T>* cur = _head;
-        StreamItem<T>* next = _head;
-        while (cur != NULL) {
-          next = cur->_next;
-          free(cur); 
-          cur = next;
-        }
-        _currentSize = NULL;
-        _maxSize = NULL;
-      }
+      flush();
     }
 
     T available() {
@@ -98,12 +88,22 @@ class DataStream {
 
       if (available() > 0) {
         value = _head->_value;
+        return value;
       }
 
-      return value;
     }
 
-    void flush() { // FIXME: implement
+    void flush() {
+      if (_head != NULL) { 
+        StreamItem<T>* cur = _head;
+        StreamItem<T>* next = _head;
+        while (cur != NULL) {
+          next = cur->_next;
+          free(cur); 
+          cur = next;
+        }
+      }
+      _currentSize = 0;
     }
 
     size_t write(const T incoming) {
