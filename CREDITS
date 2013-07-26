@@ -7,9 +7,8 @@ which is why DataStream was created.
 Most of this work was done under the auspices of an NYU ITP in-house 
 internship with Tom Igoe during Summer 2013.  
 
-Tom Igoe and Surya Mattu contributed to the very early design phase, before 
-any of us realized that DataStream might be necessary for some of the 
-thornier problems lurking in the design of the Arduino Filter library.  
+Tom Igoe, Surya Mattu, and Dustyn Roberts contributed to the design of this 
+library, in its earlier incarnation as a part of the Arduino Filter library.
 
 REFERENCES
 Filter used scaffold code from: 

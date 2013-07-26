@@ -1,7 +1,7 @@
 /*
  * DataStream - Arduino Stream-like library for data of any type
  *
- * Copyright 2012-2013 Karl Ward, Surya Mattu, Tom Igoe, and contributors
+ * Copyright 2013 Karl Ward and contributors
  * See the file CREDITS for contributors and external code referenced/incorporated
  * See the file COPYING for details on software licensing
  *
