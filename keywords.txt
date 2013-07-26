@@ -1,0 +1,20 @@
+######################################
+# Syntax Coloring Map for DataStream
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DataStream	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+available   KEYWORD2
+read   KEYWORD2
+peek   KEYWORD2
+flush   KEYWORD2
+write   KEYWORD2
+
