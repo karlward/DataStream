@@ -73,8 +73,7 @@ class DataStream {
 
     // Destructor
     ~DataStream() {
-      // FIXME: implement, free() any memory reserved by malloc()
-      // will probably want something very similar to flush()
+      flush();
     }
 
     T available() {
@@ -90,13 +89,13 @@ class DataStream {
         value = _head->_value;
         if (_head == _tail) { 
           _head = NULL;
-          _tail = NULL;
+          _tail = _head;
         } 
         else { 
           _head->_next->_prev = NULL; 
           _head = _head->_next;
-          free(oldHead); 
         } 
+        free(oldHead); 
         _currentSize--;
       }
 
@@ -123,6 +122,8 @@ class DataStream {
         }
       }
       _currentSize = 0;
+      _head = NULL;
+      _tail = _head;
     }
 
     size_t write(const T incoming) {
