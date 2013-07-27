@@ -168,6 +168,26 @@ class DataStream {
       }
       return(1);
     }
+
+    void resize(const long newSize) {
+      _maxSize = newSize; 
+      // FIXME: check for negative newSize?
+      if (_currentSize > _maxSize) { // we have to shrink
+        StreamItem<T>* forward = _head;
+        while ((forward != NULL) && (_currentSize > _maxSize)) { 
+          StreamItem<T>* old = forward; 
+          forward = forward->_next; 
+          _head = forward;
+          free(old); 
+          _currentSize--; 
+        }
+        if (_head != NULL) {
+          _head->_prev = NULL;
+        }
+      }
+    }
+
+    // FIXME: orderedWrite() or similar, perhaps writeOrdered() ?
 }; // end class DataStream
 
 #endif

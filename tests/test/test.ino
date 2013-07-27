@@ -228,6 +228,22 @@ test(flushFloat) {
   assertEqual(0, s.available());
 } 
 
+test(resize) {
+  int data[3] = {1023,31000,99};
+  DataStream<int> s = DataStream<int>(3, data, 3);
+  assertEqual(3, s.available());
+  s.resize(4);
+  s.write(100);
+  assertEqual(4, s.available());
+  s.resize(5);
+  s.write(4568);
+  assertEqual(5, s.available());
+  s.resize(4);
+  assertEqual(4, s.available());
+  s.resize(1);
+  assertEqual(1, s.available());
+}
+
 void setup() {
   Serial.begin(9600);
 }
