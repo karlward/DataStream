@@ -187,7 +187,54 @@ class DataStream {
       }
     }
 
-    // FIXME: orderedWrite() or similar, perhaps writeOrdered() ?
+    void writeOrdered(const T value) {
+      StreamItem<T>* item;
+      item = (StreamItem<T>*) malloc(sizeof(StreamItem<T>));
+      item->_value = value;
+
+      if (_head == NULL) { // first element
+        _head = item;
+        _head->_next = NULL;
+        _head->_prev = NULL;
+        _tail = _head;
+        _currentSize++;
+      }
+      else {
+        StreamItem<T>* cur = _head;
+        while (cur != NULL) {
+          if (value < cur->_value) { // NOTE: type must have operator <
+            if (cur == _head) { // special case, reset _head
+              item->_prev = NULL;
+              item->_next = _head;
+              _head->_prev = item;
+              _head = item;
+            }
+            else {
+              item->_prev = cur->_prev;
+              item->_next = cur;
+              cur->_prev->_next = item;
+              cur->_prev = item;
+            }
+            _currentSize++;
+            cur = NULL; // break out of the method
+          }
+          else if (cur == _tail) { //special case, reset _tail
+            item->_next = NULL;
+            item->_prev = _tail;
+            _tail->_next = item;
+            _tail = item;
+            _currentSize++;
+            cur = NULL;; // break out of the method
+          }
+          else {
+            cur = cur->_next;
+          }
+        }
+      }
+      while (_currentSize > _maxSize) { // if too big, must delete oldest value(s)
+        read(); // easy way to delete the oldest value
+      }
+    }
 }; // end class DataStream
 
 #endif

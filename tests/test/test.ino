@@ -244,6 +244,20 @@ test(resize) {
   assertEqual(1, s.available());
 }
 
+test(writeOrdered) {
+  int data[6] = {1023,31000,99,0,18,-32};
+  DataStream<int> s = DataStream<int>(6);
+  for (int i=0; i<6; i++) {
+    s.writeOrdered(data[i]);
+  }
+  assertEqual(-32, s.read());
+  assertEqual(0, s.read());
+  assertEqual(18, s.read());
+  assertEqual(99, s.read());
+  assertEqual(1023, s.read());
+  assertEqual(31000, s.read());
+}
+
 void setup() {
   Serial.begin(9600);
 }
