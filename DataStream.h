@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Version 0.1.2 */
+/* Version 0.1.3 */
 
 #ifndef DataStream_h
 #define DataStream_h
@@ -33,6 +33,7 @@ class StreamItem {
     StreamItem<T>* _next;
     StreamItem<T>* _prev;
   public:
+    T read() { return _value; }
     template<class> friend class DataStream;
 }; 
 
