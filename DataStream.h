@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Version 0.1.2 */
+/* Version 0.1.4 */
 
 #ifndef DataStream_h
 #define DataStream_h
@@ -33,6 +33,7 @@ class StreamItem {
     StreamItem<T>* _next;
     StreamItem<T>* _prev;
   public:
+    //T read() { return _value; }
     template<class> friend class DataStream;
 }; 
 
@@ -76,7 +77,7 @@ class DataStream {
       flush();
     }
 
-    T available() {
+    unsigned long available() {
       return _currentSize;
     }
 
@@ -107,6 +108,22 @@ class DataStream {
 
       if (available() > 0) {
         value = _head->_value;
+      }
+      return value;
+    }
+
+    T peek(const long index) {
+      T value;
+      if (available() > index) {
+        StreamItem<T>* cur = _head;
+        long i = 0;
+        while ((cur != NULL) && (i <= index)) {
+          if (i == index) {
+            value = cur->_value;
+          }
+          cur = cur->_next;
+          i++;
+        }
       }
       return value;
     }
@@ -235,6 +252,11 @@ class DataStream {
         read(); // easy way to delete the oldest value
       }
     }
+
+    unsigned long capacity() {
+      return _maxSize;
+    }
+
 }; // end class DataStream
 
 #endif
