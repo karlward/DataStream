@@ -33,7 +33,7 @@ class StreamItem {
     StreamItem<T>* _next;
     StreamItem<T>* _prev;
   public:
-    //T read() { return _value; }
+    //T read() { return(_value); }
     template<class> friend class DataStream;
 }; 
 
@@ -47,18 +47,14 @@ class DataStream {
 
   public:
     DataStream(const unsigned long maxSize) {
-      _currentSize = 0;
+      begin();
       _maxSize = maxSize;
-      _head = NULL;
-      _tail = NULL;
     }
 
     DataStream(const unsigned long maxSize, T* data, 
                const unsigned long dataSize) {
-      _currentSize = 0;
+      begin();
       _maxSize = maxSize;
-      _head = NULL;
-      _tail = NULL;
 
       for (unsigned long i = 0; i < dataSize; i++) {
         write(data[i]);
@@ -66,10 +62,8 @@ class DataStream {
     }
 
     DataStream() {
-      _currentSize = 0;
+      begin();
       _maxSize = 10;
-      _head = NULL;
-      _tail = NULL;
     }
 
     // Destructor
@@ -77,8 +71,15 @@ class DataStream {
       flush();
     }
 
-    unsigned long available() {
-      return _currentSize;
+    unsigned long available() const {
+      return(_currentSize);
+    }
+
+    void begin() {
+      _currentSize = 0;
+      _maxSize = 0;
+      _head = NULL;
+      _tail = NULL;
     }
 
     T read() {
@@ -100,19 +101,19 @@ class DataStream {
         _currentSize--;
       }
 
-      return value;
+      return(value);
     }
 
-    T peek() {
+    T peek() const {
       T value;
 
       if (available() > 0) {
         value = _head->_value;
       }
-      return value;
+      return(value);
     }
 
-    T peek(const long index) {
+    T peek(const long index) const {
       T value;
       if (available() > index) {
         StreamItem<T>* cur = _head;
@@ -125,7 +126,7 @@ class DataStream {
           i++;
         }
       }
-      return value;
+      return(value);
     }
 
     void flush() {
@@ -253,8 +254,8 @@ class DataStream {
       }
     }
 
-    unsigned long capacity() {
-      return _maxSize;
+    unsigned long capacity() const {
+      return(_maxSize);
     }
 
 }; // end class DataStream
