@@ -256,6 +256,21 @@ test(writeOrdered) {
   assertEqual(99, s.read());
   assertEqual(1023, s.read());
   assertEqual(31000, s.read());
+
+  s.writeOrdered(4);
+  s.writeOrdered(36);
+  s.writeOrdered(-2);
+  assertEqual(-2, s.read());
+  assertEqual(4, s.read());
+  assertEqual(36, s.read());
+
+  s.resize(3);
+  s.writeOrdered(100);
+  s.writeOrdered(0);
+  s.writeOrdered(0);
+  assertEqual(0, s.peek(0));
+  assertEqual(0, s.peek(1));
+  assertEqual(100, s.peek(2));
 }
 
 void setup() {
