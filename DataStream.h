@@ -82,6 +82,16 @@ class DataStream {
       _tail = NULL;
     }
 
+    bool contains(T value) {
+      unsigned long count = available();
+      for (unsigned long i = 0; i < count; i++) {
+        if (value == peek(i)) {
+          return(true);
+        }
+      }
+      return(false); // if we get this far, the value is not present
+    }
+
     T read() {
       StreamItem<T>* oldHead;
       T value; 

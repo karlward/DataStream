@@ -273,6 +273,20 @@ test(writeOrdered) {
   assertEqual(100, s.peek(2));
 }
 
+test(contains) {
+  int data[4] = {1023,31000,0,-32};
+  DataStream<int> s = DataStream<int>(4);
+  for (int i=0; i<4; i++) {
+    s.write(data[i]);
+  }
+  assertEqual(true, s.contains(31000));
+  assertEqual(true, s.contains(-32));
+  assertEqual(true, s.contains(1023));
+  assertEqual(true, s.contains(0));
+  assertEqual(false, s.contains(1024));
+  assertEqual(false, s.contains(10000));
+}
+
 void setup() {
   Serial.begin(9600);
 }
