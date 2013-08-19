@@ -206,8 +206,7 @@ class DataStream {
     }
 
     void writeOrdered(const T value) {
-      StreamItem<T>* item;
-      item = (StreamItem<T>*) malloc(sizeof(StreamItem<T>));
+      StreamItem<T>* item = (StreamItem<T>*) malloc(sizeof(StreamItem<T>));
       item->_value = value;
 
       if (_head == NULL) { // first element
